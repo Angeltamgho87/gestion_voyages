@@ -1,0 +1,11 @@
+.card-img {
+    object-fit: cover; /* Maintient les proportions de l'image */
+    width: 100%; /* Assure que l'image occupe toute la largeur du conteneur */
+    height: 300px; /* Définit la hauteur fixe */
+
+}
+
+.page-title{
+    text-align: center;
+    padding: 20px;
+}

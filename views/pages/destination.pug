@@ -1,0 +1,42 @@
+extends ../layout
+block title
+    .row.page-title
+        h2 Destination : #{destination.description}
+block content
+    section
+        .container
+            .row
+                .col-md-8.offset-md-2
+                    .card
+                        img.card-img-top.card-img(src=destination.image, alt=`Image` height=300)
+                        .card-body
+                            p.card-text
+                                strong Description :
+                                span  #{destination.description}
+                            p.card-text
+                                strong Climat :
+                                |  #{destination.climate}
+                            p.card-text
+                                strong Période idéale pour visiter :
+                                |  #{destination.bestVisitPeriod}
+                            p.card-text
+                                strong Activités principales :
+                                ul
+                                    each activity in destination.mainActivities
+                                        li= activity
+                            p.card-text
+                                strong Activités recommandées :
+                                ul
+                                    each activity in destination.recommendedActivities
+                                        li= activity
+                            p.card-text
+                                strong Hébergements disponibles :
+                                ul
+                                    each accommodation in destination.availableAccommodations
+                                        li= accommodation
+                            p.card-text
+                                strong Moyens de transport :
+                                ul
+                                    each transport in destination.transportationOptions
+                                        li= transport
+                            a.btn.btn-success(href=`/api/trips/new/${destination._id}`) Ajouter un voyage

@@ -1,0 +1,52 @@
+extends ../layout
+block title
+    .row.page-title
+        h2 Liste des destinations
+
+block content
+    .section
+        .container
+            // Formulaire de recherche
+            form(action="/api/destinations/filter/search" method="get" class="mb-4")
+                .row
+                    .col-md-4
+                        // recherche dans du pays ou de la ville dans le champs "description"
+                        label(for="mainActivities") Nom de la ville ou pays
+                        input#mainActivities.form-control(type="text" name="description" placeholder="Ex: Exploration...")
+
+                    .col-md-4
+                        // recherche d'activités dans les champs : mainActivities et recommendedActivities
+                        label(for="recommendedActivities") Activités
+                        input#recommendedActivities.form-control(type="text" name="activities" placeholder="Ex: Observation, Ski...")
+
+                    .col-md-4
+                        label(for="accommodations") Hébergements disponibles
+                        input#accommodations.form-control(type="text" name="accommodations" placeholder="Ex: Hôtel, Chalet")
+
+                .row.mt-3
+                    .row.row-cols-6
+                        .col
+                            button.btn.btn-primary(type="submit") Rechercher
+                        .col
+                            a.btn.btn-outline-secondary(href="/") Reinitialiser
+            //resultats
+            .row.row-cols-1.row-cols-md-3.g-4
+                if destinations && destinations.length > 0
+                    each destination in destinations
+                        .col
+                            .card
+                                img.card-img-top(src=destination.image, alt=`Image `)
+                                .card-body
+                                    h5.card-title= destination.description
+                                    p.card-text
+                                        strong Climat :
+                                        |  #{destination.climate}
+                                    p.card-text
+                                        strong Activités principales :
+                                        ul
+                                            each activity in destination.mainActivities
+                                                li= activity
+                                    a.btn.btn-primary(href=`/api/destinations/${destination._id}`) En savoir plus
+                else
+                    .col
+                       h5.card-title Aucune destination disponible pour le moment

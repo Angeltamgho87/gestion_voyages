@@ -1,0 +1,72 @@
+extends ../layout
+//- Définir le titre de la page
+block title
+    .row.page-title
+        h2 Enregistrement d'un voyage
+block content
+    div(class="d-flex flex-row content mx-auto")
+        div(class="flex-fill")
+            // Bannière image de la destination sélectionnée
+            img.card-img-top.card-img(
+                src=(trip && trip.destinationId && trip.destinationId.image) ? trip.destinationId.image : destination.image,
+                alt='Image'
+            )
+            form(
+                class="card"
+                method="post"
+                action=(trip ? `/api/trips/update/${trip._id}` : '/api/trips')
+            )
+                // Middleware method override
+                if trip
+                    input(type="hidden" name="_method" value="PUT")
+
+                div(class="card-header") Planifier un voyage
+                div(class="card-header")=(trip && trip.destinationId && trip.destinationId.description) ? trip.destinationId.description : destination.description
+                div(class="card-body")
+                    // Champ caché pour entrer l'id de la destination
+                    input(
+                        type="hidden"
+                        name="destinationId"
+                        value=(trip && trip.destinationId && trip.destinationId._id) ? trip.destinationId._id : destination._id
+                    )
+
+                    // Champ pour la date de départ
+                    div(class="mb-3")
+                        label(for="startDate" class="form-label") Date de départ
+                        input(
+                            type="date"
+                            class="form-control"
+                            id="startDate"
+                            name="startDate"
+                            value=(trip && trip.startDate) ? trip.startDate.toISOString().split('T')[0] : ''
+                        required
+                        )
+
+                    // Champ pour la date de fin
+                    div(class="mb-3")
+                        label(for="endDate" class="form-label") Date de fin
+                        input(
+                            type="date"
+                            class="form-control"
+                            id="endDate"
+                            name="endDate"
+                            value=(trip && trip.endDate) ? trip.endDate.toISOString().split('T')[0] : ''
+                        required
+                        )
+
+                    // Champ pour le budget
+                    div(class="mb-3")
+                        label(for="budget" class="form-label") Budget ($)
+                        input(
+                            type="number"
+                            class="form-control"
+                            id="budget"
+                            name="budget"
+                            value=(trip && trip.budget) ? trip.budget : ''
+                            required
+                            min="0"
+                        )
+
+                    // Bouton de soumission
+                    div(class="w-100")
+                        button(type="submit" class="btn btn-primary ms-auto d-block") Enregistrer

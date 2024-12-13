@@ -1,0 +1,41 @@
+extends ../layout
+
+//-definir le titre de la page
+block title
+    .row.page-title
+        h2 Liste des voyages enregistrés
+block content
+    .section
+        .container
+            //- verifier si trips contient des données
+            if trips && trips.length >0
+                .row.row-cols-1.row-cols-md-3.g-4
+                        // Pour chaque voyage trouvé dans trips
+                        each trip in trips
+                            .col
+                                .card
+                                    img.card-img-top(src=trip.destinationId.image, alt=`Image `)
+                                    h6.p-2.card-title
+                                        Strong Description :
+                                        |  #{trip.destinationId.description}
+                                    .card-body
+                                        h5.card-title= trip.destinationId.climate
+                                        p.card-text
+                                            strong Date de début :
+                                            |  #{trip.startDate}
+                                        p.card-text
+                                            strong Date de fin :
+                                            |  #{trip.endDate}
+                                        p.card-text
+                                            strong Budget :
+                                            |  #{trip.budget} $CAD
+                                        input(type="hidden" value= trip._id)
+
+                                        .d-flex.flex-row.align-items-center
+                                            .btn
+                                                button.btn.btn-danger.btn-sm(type="button" onclick=`deleteTrip(${trip._id})`) Supprimer
+                                            .btn
+                                                a.btn.btn-outline-danger(href=` /api/trips/form/update/${trip._id}` ) Editer
+            else
+                //- Si trips ne contient aucune donnée
+                h5.card-title.text-danger.text-center Pas de voyages enregistrés...
